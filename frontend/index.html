@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Youmeme — The World's First Immersive Social Network</title>
+<link href="https://googleapis.com" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body {
+  background-color: #0b0813;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── NEO-COSMIC BACKGROUND PARTICLE CANVAS ── */
+#particle-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── 3D PARALLAX INTERACTIVE OBJECT VIEWPORT ── */
+.astronaut-viewport {
+  position: fixed;
+  top: 0; right: 5%;
+  width: 50vw; height: 100vh;
+  z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  perspective: 1000px;
+}
+.astronaut-wrapper {
+  position: relative;
+  width: 480px; height: 480px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+.astronaut-character-mesh {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 50px rgba(111, 76, 233, 0.3));
+  animation: cosmicFloat 5s ease-in-out infinite;
+}
+
+@keyframes cosmicFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-18px) rotate(2deg); }
+}
+
+/* ── TYPOGRAPHY UI INTERFACE SECTIONS ── */
+.web-ui { position: relative; z-index: 10; width: 100%; }
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 25px 6%; z-index: 100;
+  background: linear-gradient(to bottom, rgba(11,8,19,0.7), transparent);
+  backdrop-filter: blur(4px);
+}
+.brand-logo {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+  color: #ffffff; text-decoration: none; display: flex; align-items: center; gap: 8px;
+}
+.brand-logo::before {
+  content: ''; width: 12px; height: 12px; background: #6f4ce9; border-radius: 50%;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; font-size: 14px; font-weight: 500; }
+.nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; transition: 0.3s; }
+.nav-links a:hover { color: #ffffff; }
+
+.launch-btn {
+  background: #ffffff; color: #0b0813; padding: 12px 28px;
+  font-size: 14px; font-weight: 700; border-radius: 40px;
+  text-decoration: none; transition: 0.3s; box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+}
+.launch-btn:hover { background: #6f4ce9; color: #ffffff; transform: translateY(-2px); }
+
+/* MAIN DISPLAY CONTENT HERO */
+section { min-height: 100vh; display: flex; align-items: center; padding: 0 8%; }
+.content-box { max-width: 540px; }
+
+.headline-title {
+  font-size: clamp(48px, 7vw, 84px); font-weight: 700; letter-spacing: -2px;
+  line-height: 1.05; margin-bottom: 24px; color: #ffffff;
+}
+p {
+  font-size: 16px; font-weight: 400; line-height: 1.7;
+  color: rgba(255,255,255,0.5); margin-bottom: 40px; max-width: 440px;
+}
+.btn-group { display: flex; gap: 16px; }
+.btn-secondary {
+  background: rgba(255,255,255,0.05); color: #ffffff; border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px 32px; font-size: 14px; font-weight: 700; border-radius: 40px;
+  text-decoration: none; transition: 0.3s; backdrop-filter: blur(10px);
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+
+@media(max-width: 992px) {
+  .astronaut-viewport { width: 100vw; right: 0; opacity: 0.25; justify-content: center; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Active Background Neon Particle System -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- Interactive 3D Parallax Graphic Layer -->
+<div class="astronaut-viewport" id="canvasFrame">
+  <div class="astronaut-wrapper" id="astronautContainer">
+    <!-- Inline Vector Graphics Assembly representing the Youmeme Astronaut Space Dog Helmet -->
+    <svg class="astronaut-character-mesh" viewBox="0 0 200 200" xmlns="http://w3.org">
+      <!-- Dark Suit Collar base -->
+      <path d="M70,145 C70,145 80,165 100,165 C120,165 130,145 130,145 Z" fill="#1b172b" />
+      <path d="M85,145 L115,145 L100,158 Z" fill="#6f4ce9" />
+
+      <!-- Dog Ears behind helmet -->
+      <path d="M62,75 Q48,55 58,45 Q70,52 68,70 Z" fill="#3a2f5c" />
+      <path d="M138,75 Q152,55 142,45 Q130,52 132,70 Z" fill="#3a2f5c" />
+
+      <!-- Dog Head Base Structure -->
+      <ellipse cx="100" cy="100" rx="36" ry="34" fill="#52437e" />
+      <path d="M74,114 C74,90 126,90 126,114 C126,132 74,132 74,114 Z" fill="#ffffff" /> <!-- White Muzzle Area -->
+
+      <!-- Expressive Face Components -->
+      <ellipse cx="84" cy="94" rx="8" ry="11" fill="#1b172b" /> <!-- Left Eyepatch -->
+      <circle cx="85" cy="94" r="3" fill="#ffffff" /> <!-- Pupil -->
+      <circle cx="115" cy="94" r="3" fill="#ffffff" /> <!-- Right Eye Pupil -->
+      
+      <!-- Cute Snout & Mouth Grid -->
+      <ellipse cx="100" cy="110" rx="8" ry="5" fill="#1b172b" /> <!-- Nose -->
+      <path d="M94,118 Q100,124 106,118" fill="none" stroke="#1b172b" stroke-width="2" stroke-linecap="round" />
+
+      <!-- Glass Space Bubble Helmet Layer Envelope -->
+      <circle cx="100" cy="96" r="54" fill="radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, rgba(111,76,233,0.05) 50%, transparent 70%)" stroke="rgba(255, 255, 255, 0.35)" stroke-width="1.5" />
+      <!-- High-fidelity glass highlight reflections vector contours -->
+      <path d="M60,66 A 46 46 0 0 1 114 48" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2.5" stroke-linecap="round" />
+      <circle cx="134" cy="74" r="4" fill="rgba(255,255,255,0.25)" />
+    </svg>
+  </div>
+</div>
+
+<!-- Scrollable Content Interface Matrix Overlay -->
+<div class="web-ui">
+  <nav>
+    <a href="#" class="brand-logo">Youmeme</a>
+    <ul class="nav-links">
+      <li><a href="#">Ecosystem</a></li>
+      <li><a href="#">Meme Matrix</a></li>
+      <li><a href="#">Network</a></li>
+      <li><a href="#">Tokens</a></li>
+    </ul>
+    <a href="#" class="launch-btn">Launch App</a>
+  </nav>
+
+  <section>
+    <div class="content-box">
+      <h1 class="headline-title">Youmeme</h1>
+      <p>The World's First Immersive Entertainment Social Network for Web3. Designed for global meme creators, community assets, and visual architects.</p>
+      <div class="btn-group">
+        <a href="#" class="launch-btn" style="padding: 14px 36px;">Enter Space</a>
+        <a href="#" class="btn-secondary">Whitepaper</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ENGINE LOOPS INTERACTION SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const canvas = document.getElementById("particle-canvas");
+  const ctx = canvas.getContext("2d");
+  const canvasFrame = document.getElementById("canvasFrame");
+  const astronautContainer = document.getElementById("astronautContainer");
+
+  // --- 1. DYNAMIC HIGH-PERFORMANCE BOKEH PARTICLE SYSTEM ---
+  let particlesArray = [];
+  const colors = ["rgba(111, 76, 233, 0.4)", "rgba(0, 242, 254, 0.3)", "rgba(243, 131, 224, 0.3)"];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.radius = Math.random() * 25 + 5; // Generates soft blurry bokeh circles
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.speedY = Math.random() * 0.4 - 0.2;
+      this.speedX = Math.random() * 0.4 - 0.2;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      // Soft boundary edge reset looping bounce math
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.circle * 2);
+      ctx.fillStyle = this.color;
+      // Add neon atmospheric glow filters inside the 2D frame context
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = this.color;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particlesArray = [];
+    const particleCount = Math.min(45, window.innerWidth / 30);
+    for (let i = 0; i < particleCount; i++) {
+      particlesArray.push(new Particle());
+    }
+  }
+  initParticles();
+
+  // --- 2. SMOOTH 3D PARALLAX INTERPOLATION (LERP ENGINE) ---
+  let currentX = 0, currentY = 0;
+  let targetX = 0, targetY = 0;
+
+  window.addEventListener("mousemove", (e) => {
+    targetX = (e.clientX / window.innerWidth - 0.5) * 35; // Maximum 35 degrees sweep tracking path arrays
+    targetY = (e.clientY / window.innerHeight - 0.5) * -35;
+  });
+
+  // Main rendering framework block logic loop pipeline operational steps
+  function engineLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Process background particle steps
+    for (let i = 0; i < particlesArray.length; i++) {
+      particlesArray[i].update();
+      particlesArray[i].draw();
+    }
+
+    // Apply linear interpolation smooth delay updates onto the character mesh viewport anchor wrapper frame
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
+    astronautContainer.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+
+    requestAnimationFrame(engineLoop);
+  }
+  engineLoop();
+});
+</script>
+</body>
+</html>
