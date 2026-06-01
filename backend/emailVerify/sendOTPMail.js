@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const verifyEmail = async (token, email) => {
+const sendOTPMail = async (otp, email) => {
 
     try {
 
@@ -18,14 +18,12 @@ const verifyEmail = async (token, email) => {
         const mailOptions = {
             from: process.env.MAIL_USER,
             to: email,
-            subject: "Verify Email",
-            text: `Click this link to verify your email:
-http://localhost:5173/verify/${token}`
+            subject: "password reset OTP",
+            html: `<p>Your OTP for password reset is: <b>${otp}</b></p>`
         };
 
         await transporter.sendMail(mailOptions);
-
-        console.log("Verification email sent successfully");
+        console.log("Verification otp send successfully");
 
     } catch (error) {
 
@@ -35,4 +33,4 @@ http://localhost:5173/verify/${token}`
 
 };
 
-export default verifyEmail;
+export default sendOTPMail;
